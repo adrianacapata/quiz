@@ -8,7 +8,6 @@
 
 namespace Quiz\Console;
 
-
 class CsvHandler
 {
     // file
@@ -177,6 +176,6 @@ class CsvHandler
         }
 
         fclose($file);
-        return TRUE;
+        return true;
     }
 }

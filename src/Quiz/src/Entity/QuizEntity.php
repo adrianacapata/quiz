@@ -8,7 +8,6 @@
 
 namespace Quiz\Entity;
 
-
 use Dot\Mapper\Entity\Entity;
 
 class QuizEntity extends Entity

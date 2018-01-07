@@ -29,7 +29,7 @@ use Zend\Session\Container;
 
 /**
  * Class ContactController
- * @package Frontend\App\Controller
+ * @package Frontend\App\QuizController
  *
  * @method UrlHelperPlugin|UriInterface url(string $route = null, array $params = [])
  * @method FlashMessengerPlugin messenger()

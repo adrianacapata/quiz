@@ -10,7 +10,7 @@ namespace Quiz\Controller;
 
 use Dot\Controller\AbstractActionController;
 
-class Controller extends AbstractActionController
+class QuizController extends AbstractActionController
 {
 
 }

@@ -33,7 +33,7 @@ use Zend\Session\Container;
 
 /**
  * Class UserController
- * @package Frontend\User\Controller
+ * @package Frontend\User\QuizController
  *
  * @method UrlHelperPlugin|UriInterface url($r = null, $p = [], $q = [], $f = null, $o = [])
  * @method FlashMessengerPlugin messenger()

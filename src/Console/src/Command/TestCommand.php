@@ -32,55 +32,45 @@ class TestCommand extends AbstractCommand
     public function __invoke(Route $route, AdapterInterface $console)
     {
         $commands = require 'config/autoload/console.global.php';
-//        $commands = $container->get('dot_console');
-//        var_dump($commands['dot_console']['commands']); exit;
-//        switch () {
-//            case 'test':
-//                $sourcePath = getcwd() . '\src\Console\src\stock.csv';
-//                $destPath = getcwd() . '\src\Console\src\something.txt';
-//
-//
-//                $csvHandlerRead = new CsvHandler($sourcePath);
-//                $csvHandlerWrite = new CsvHandler($destPath, 'w');
-//
-//
-//                $header = $csvHandlerRead->getHeader();
-//                $csvHandlerWrite->setHeader($header);
-//                $csvHandlerWrite->writeHeaderLine();
-//
-//                while ($data = $csvHandlerRead->readAssocNextRecord()) {
-//                    $allData[] = $data;
-////            $console->write('test');
-//                }
-////        $csvHandlerWrite->writeCsvLine($data);
-//        break;
-//            case 'test2':
-//                echo 'test2';
-//                break;
-//        }
 
+        $sourcePath = getcwd() . '\src\Console\src\stock.csv';
+        $destPath = getcwd() . '\src\Console\src\report.csv';
 
-                $sourcePath = getcwd() . '\src\Console\src\stock.csv';
-                $destPath = getcwd() . '\src\Console\src\something.txt';
+        $csvHandlerRead = new CsvHandler($sourcePath);
+        $csvHandlerWrite = new CsvHandler($destPath, 'w');
 
-                $csvHandlerRead = new CsvHandler($sourcePath);
-                $csvHandlerWrite = new CsvHandler($destPath, 'w');
+        $header = $csvHandlerRead->getHeader();
 
+        $csvHandlerWrite->setHeader($header);
+        $csvHandlerWrite->writeHeaderLine();
 
-                $header = $csvHandlerRead->getHeader();
-                $csvHandlerWrite->setHeader($header);
-                $csvHandlerWrite->writeHeaderLine();
+        while ($data = $csvHandlerRead->readAssocNextRecord()) {
 
-                while ($data = $csvHandlerRead->readAssocNextRecord()) {
-                    $allData[] = $data;
-                    foreach ($data as $key => $value) {
-                        var_dump($data);
-                    }
-
+            $valid = true;
+            $discounted = false;
+            if ($data['Cost in GBP'] < 5 && $data['Stock'] > 10) {
+                $valid = false;
+            } else if ($data['Cost in GBP'] > 1000) {
+                $valid = false;
+            }
+            if (strtolower($data['Discontinued']) == 'yes') {
+                $valid = true;
+                $discounted = true;
+            }
+            if ($valid == true) {
+                $product = [
+                    'name' => $data['Product Name'],
+                    'description' => $data['Product Description'],
+                    'code' => $data['Product Code']
+                ];
+                if ($discounted == false) {
+                    $product['discontinued_at'] = null;
                 }
-//        $csvHandlerWrite->writeCsvLine($allData);
-
-
+//                self::addProduct($product);
+            } else {
+                $csvHandlerWrite->writeCsvLine($data);
+            }
+        }
         return 0;
     }
 }

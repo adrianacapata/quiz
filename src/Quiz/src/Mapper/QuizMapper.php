@@ -8,7 +8,6 @@
 
 namespace Quiz\Mapper;
 
-
 use Dot\Mapper\Mapper\AbstractDbMapper;
 
 class QuizMapper extends AbstractDbMapper

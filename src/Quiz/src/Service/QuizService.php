@@ -8,7 +8,6 @@
 
 namespace Quiz\Service;
 
-
 use Dot\Mapper\Mapper\MapperManagerAwareInterface;
 use Dot\Mapper\Mapper\MapperManagerAwareTrait;
 
@@ -16,4 +15,13 @@ class QuizService implements MapperManagerAwareInterface
 {
     use MapperManagerAwareTrait;
 
+    public function import(QuizEntity $quiz)
+    {
+        $options = [
+            'fields' => '*',
+        ];
+
+        $mapper = $this->getMapperManager()->get(QuizEntity::class);
+        return $mapper->save($quiz);
+    }
 }
