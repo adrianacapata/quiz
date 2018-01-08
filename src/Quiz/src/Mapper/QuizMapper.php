@@ -9,8 +9,9 @@
 namespace Quiz\Mapper;
 
 use Dot\Mapper\Mapper\AbstractDbMapper;
+use Dot\Mapper\Mapper\MapperInterface;
 
-class QuizMapper extends AbstractDbMapper
+class QuizMapper extends AbstractDbMapper implements MapperInterface
 {
-    protected $table = 'qubiz_test';
+    protected $table = 'product';
 }

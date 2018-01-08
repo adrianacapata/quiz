@@ -1,5 +1,3 @@
 "Product Code","Product Name","Product Description",Stock,"Cost in GBP",Discontinued
-P0015,"Bluray Player","Excellent picture",32,$4.33,
-P0015,"Bluray Player","Excellent picture",32,4.33,
-P0019,"CD Bundle","Store all your data. Very convenient",23,3.44,
-P0022,"Bluray Player","The future of home entertainment!",45,3,
+P0011,"Misc Cables","error in export",,,
+P0017,CPU,"Processing power"," ideal for multimedia",4,4.22

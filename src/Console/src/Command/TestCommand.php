@@ -10,7 +10,10 @@ namespace Quiz\Console\Command;
 
 use Dot\AnnotatedServices\Annotation\Service;
 use Dot\Console\Command\AbstractCommand;
-use Symfony\Component\Console\Tests\DependencyInjection\AddConsoleCommandPassTest;
+use Quiz\Controller\QuizController;
+use Quiz\Entity\QuizEntity;
+use Quiz\Service\QuizService;
+use Quiz\Service\QuizServiceInterface;
 use Zend\Console\Adapter\AdapterInterface;
 use ZF\Console\Route;
 use Quiz\Console\CsvHandler;
@@ -33,6 +36,25 @@ class TestCommand extends AbstractCommand
     {
         $commands = require 'config/autoload/console.global.php';
 
+        self::csvImport();
+        return 0;
+    }
+
+    public function __construct(QuizServiceInterface $service)
+    {
+        $this->service = $service;
+    }
+
+    public function addCsv()
+    {
+        $import = new QuizEntity();
+
+    }
+
+    public function csvImport()
+    {
+
+//        var_dump(date('Y-m-d H:i:s')); exit;
         $sourcePath = getcwd() . '\src\Console\src\stock.csv';
         $destPath = getcwd() . '\src\Console\src\report.csv';
 
@@ -45,10 +67,10 @@ class TestCommand extends AbstractCommand
         $csvHandlerWrite->writeHeaderLine();
 
         while ($data = $csvHandlerRead->readAssocNextRecord()) {
-
+            $product = [];
             $valid = true;
             $discounted = false;
-            if ($data['Cost in GBP'] < 5 && $data['Stock'] > 10) {
+            if ($data['Cost in GBP'] < 5 && $data['Stock'] < 10) {
                 $valid = false;
             } else if ($data['Cost in GBP'] > 1000) {
                 $valid = false;
@@ -63,14 +85,26 @@ class TestCommand extends AbstractCommand
                     'description' => $data['Product Description'],
                     'code' => $data['Product Code']
                 ];
+
+
+                $import = new QuizEntity();
+
+                $import->setName($product['name']);
+                $import->setDescription($product['description']);
+                $import->setCode($product['code']);
+
+                $date = date('Y-m-d H:i:s');
+
                 if ($discounted == false) {
-                    $product['discontinued_at'] = null;
+                    $import->setDiscontinuedAt('0000-00-00 00:00:00');
                 }
-//                self::addProduct($product);
+//var_dump($import->getDiscontinuedAt());
+                $this->service->import($import);
+
+                //                self::addProduct($product);
             } else {
                 $csvHandlerWrite->writeCsvLine($data);
             }
         }
-        return 0;
     }
 }
