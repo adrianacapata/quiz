@@ -30,7 +30,6 @@ class TestCommand extends AbstractCommand
      */
     public function __invoke(Route $route, AdapterInterface $console)
     {
-        $commands = require 'config/autoload/console.global.php';
         self::csvTest();
 
         return 0;
@@ -38,31 +37,26 @@ class TestCommand extends AbstractCommand
 
     public function csvTest()
     {
-
-//        var_dump(date('Y-m-d H:i:s')); exit;
         $sourcePath = getcwd() . '\src\Console\src\stock.csv';
-        //set path to report.csv file
-        $destPath = getcwd() . '\src\Console\src\report.csv';
 
         //object to read csv file
         $csvHandlerRead = new CsvHandler($sourcePath);
 
-        //object to write the report.csv file
-        $csvHandlerWrite = new CsvHandler($destPath, 'w');
-
-        //get the headers of the stock.csv file
-        $header = $csvHandlerRead->getHeader();
-
-        //set headers
-        $csvHandlerWrite->setHeader($header);
-        $csvHandlerWrite->writeHeaderLine();
+        //counts processed items
+        $i = 0;
+        //counts valid items
+        $j = 0;
 
         //parse csv file associatively
         while ($data = $csvHandlerRead->readAssocNextRecord()) {
+            $i++;
             //proudcts will be inserted to db
             $product = [];
+
             $valid = true;
             $discounted = false;
+
+            //import rules
             if ($data['Cost in GBP'] < 5 && $data['Stock'] < 10) {
                 $valid = false;
             } elseif ($data['Cost in GBP'] > 1000) {
@@ -73,6 +67,7 @@ class TestCommand extends AbstractCommand
                 $discounted = true;
             }
             if ($valid == true) {
+                $j++;
                 $product = [
                     'name' => $data['Product Name'],
                     'description' => $data['Product Description'],
@@ -80,5 +75,10 @@ class TestCommand extends AbstractCommand
                 ];
             }
         }
+
+        echo $i . " items were processed\n";
+        echo $j . " items can be inserted in db\n";
+        echo $i - $j . " item/items were skipped";
+//        $fp = fopen(getcwd() . '\src\Console\src\report.txt', 'r');
     }
 }

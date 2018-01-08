@@ -26,6 +26,8 @@ class QuizEntity extends Entity
 
     protected $discontinued_at;
 
+    protected $stock;
+
     /**
      * @return mixed
      */
@@ -137,4 +139,39 @@ class QuizEntity extends Entity
     {
         $this->discontinued_at = $discontinued_at;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStock()
+    {
+        return $this->stock;
+    }
+
+    /**
+     * @param mixed $stock
+     */
+    public function setStock($stock)
+    {
+        $this->stock = $stock;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * @param mixed $price
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+    }
+
+    protected $price;
+
 }

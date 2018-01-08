@@ -73,25 +73,32 @@ class ImportCommand extends AbstractCommand
                 $product = [
                     'name' => $data['Product Name'],
                     'description' => $data['Product Description'],
-                    'code' => $data['Product Code']
+                    'code' => $data['Product Code'],
+                    'stock' => $data['Stock'],
+                    'price' => $data['Cost in GBP']
                 ];
 
+                //create new product entity
                 $import = new QuizEntity();
 
                 $import->setName($product['name']);
                 $import->setDescription($product['description']);
                 $import->setCode($product['code']);
+                $import->setStock($product['stock']);
+                $import->setPrice($product['price']);
 
                 $date = date('Y-m-d H:i:s');
 
                 if ($discounted == true) {
+                    //@TODO fix this!!!
                     $import->setDiscontinuedAt($date);
                 }
-//var_dump($import->getDiscontinuedAt());
+
                 $this->service->import($import);
             } else {
                 $csvHandlerWrite->writeCsvLine($data);
             }
         }
+        echo 'see items that were skipped in src\Console\src\report.csv';
     }
 }
