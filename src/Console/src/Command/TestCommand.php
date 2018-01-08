@@ -10,8 +10,6 @@ namespace Quiz\Console\Command;
 
 use Dot\AnnotatedServices\Annotation\Service;
 use Dot\Console\Command\AbstractCommand;
-use Quiz\Entity\QuizEntity;
-use Quiz\Service\QuizServiceInterface;
 use Zend\Console\Adapter\AdapterInterface;
 use ZF\Console\Route;
 use Quiz\Console\CsvHandler;
@@ -40,7 +38,8 @@ class TestCommand extends AbstractCommand
 
     public function csvTest()
     {
-        //get source path to the csv file
+
+//        var_dump(date('Y-m-d H:i:s')); exit;
         $sourcePath = getcwd() . '\src\Console\src\stock.csv';
         //set path to report.csv file
         $destPath = getcwd() . '\src\Console\src\report.csv';
@@ -62,7 +61,6 @@ class TestCommand extends AbstractCommand
         while ($data = $csvHandlerRead->readAssocNextRecord()) {
             //proudcts will be inserted to db
             $product = [];
-
             $valid = true;
             $discounted = false;
             if ($data['Cost in GBP'] < 5 && $data['Stock'] < 10) {

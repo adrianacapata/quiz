@@ -17,7 +17,6 @@ class QuizFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-
         $service = $container->get(QuizServiceInterface::class);
         return new ImportCommand($service);
     }
