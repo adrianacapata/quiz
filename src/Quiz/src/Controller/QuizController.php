@@ -9,6 +9,7 @@
 namespace Quiz\Controller;
 
 use Dot\Controller\AbstractActionController;
+use Quiz\Console\CsvHandler;
 
 class QuizController extends AbstractActionController
 {

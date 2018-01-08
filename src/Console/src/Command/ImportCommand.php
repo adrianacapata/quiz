@@ -2,28 +2,20 @@
 /**
  * Created by PhpStorm.
  * User: Adriana
- * Date: 1/6/2018
- * Time: 6:33 PM
+ * Date: 1/8/2018
+ * Time: 10:31 PM
  */
 
 namespace Quiz\Console\Command;
 
-use Dot\AnnotatedServices\Annotation\Service;
 use Dot\Console\Command\AbstractCommand;
+use Quiz\Console\CsvHandler;
 use Quiz\Entity\QuizEntity;
 use Quiz\Service\QuizServiceInterface;
 use Zend\Console\Adapter\AdapterInterface;
 use ZF\Console\Route;
-use Quiz\Console\CsvHandler;
 
-/**
- * Class TestCommand
- * @package Frontend\Console\Command
- *
- * @Service
- */
-
-class TestCommand extends AbstractCommand
+class ImportCommand extends AbstractCommand
 {
 
     /**
@@ -32,13 +24,16 @@ class TestCommand extends AbstractCommand
      */
     public function __invoke(Route $route, AdapterInterface $console)
     {
-        $commands = require 'config/autoload/console.global.php';
-        self::csvTest();
-
+        self::csvImport();
         return 0;
     }
 
-    public function csvTest()
+    public function __construct(QuizServiceInterface $service)
+    {
+        $this->service = $service;
+    }
+
+    public function csvImport()
     {
         //get source path to the csv file
         $sourcePath = getcwd() . '\src\Console\src\stock.csv';
@@ -60,7 +55,7 @@ class TestCommand extends AbstractCommand
 
         //parse csv file associatively
         while ($data = $csvHandlerRead->readAssocNextRecord()) {
-            //proudcts will be inserted to db
+            //proudcts that will be inserted to db
             $product = [];
 
             $valid = true;
@@ -80,6 +75,22 @@ class TestCommand extends AbstractCommand
                     'description' => $data['Product Description'],
                     'code' => $data['Product Code']
                 ];
+
+                $import = new QuizEntity();
+
+                $import->setName($product['name']);
+                $import->setDescription($product['description']);
+                $import->setCode($product['code']);
+
+                $date = date('Y-m-d H:i:s');
+
+                if ($discounted == true) {
+                    $import->setDiscontinuedAt($date);
+                }
+//var_dump($import->getDiscontinuedAt());
+                $this->service->import($import);
+            } else {
+                $csvHandlerWrite->writeCsvLine($data);
             }
         }
     }

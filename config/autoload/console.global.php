@@ -21,9 +21,9 @@ return [
             ],
 
             [
-                'name' => 'test2',
+                'name' => 'import',
                 'description' => 'some description',
-                'handler' => \Quiz\Console\Command\TestCommand::class,
+                'handler' => \Quiz\Console\Command\ImportCommand::class,
             ]
         ]
     ]
